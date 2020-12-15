@@ -1,0 +1,2 @@
+# QExtendedGenericMatrix
+Extension of QGenericMatrix
