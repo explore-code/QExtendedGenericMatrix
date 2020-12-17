@@ -118,6 +118,12 @@ protected:
 template <typename T>
 using QEMatrix2x2 = QExtendedGenericMatrix<2, 2, T>;
 
+template <typename T>
+using QEMatrix3x3 = QExtendedGenericMatrix<3, 3, T>;
+
+template <typename T>
+using QEMatrix4x4 = QExtendedGenericMatrix<4, 4, T>;
+
 template <int N, int M, typename T>
 QExtendedGenericMatrix<N, M, T>::QExtendedGenericMatrix() : QGenericMatrix<N, M, T>()
 {
