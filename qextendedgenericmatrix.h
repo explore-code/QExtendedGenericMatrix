@@ -12,6 +12,7 @@ class QExtendedGenericMatrix : public QGenericMatrix<N, M, T>
 {
 
 public:
+
     /**
      * @brief QExtendedGenericMatrix<N, M, T> Creates an identity matrix with M rows and N columns
      */
@@ -34,6 +35,7 @@ public:
      * @return Returns the determinant of this matrix
      */
     T determinant() const;
+
     /**
      * @brief inverted Calculates the inverse of this matrix
      * @param invertible After execution this parameter will be 'true' iff this matrix is invertible (determinant != 0)
@@ -41,12 +43,14 @@ public:
      * @return Returns a new matrix which is the inverse of this matrix
      */
     QExtendedGenericMatrix<N, M, T> inverted(bool *invertible = NULL) const;
+
     /**
      * @brief row Extracts the i th row of this matrix
      * @param i The index of the row
      * @return Returns the i th row of this matrix
      */
     QExtendedGenericMatrix<N, 1, T> row(const uint &i) const;
+
     /**
      * @brief col Extracts the j th column of this matrix
      * @param j The index of the column
@@ -86,6 +90,123 @@ public:
 
     }
 
+    /**
+     * @brief transposed Determines the transposed of this matrix
+     * @return Returns the transposed of this matrix
+     */
+    QExtendedGenericMatrix<N, M, T> transposed() const;
+
+    /**
+     * @brief operator *= Multiplies each entry of this matrix by a factor
+     * @param factor The factor this matrix is multiplied by
+     * @return Returns a copy of this matrix after multiplication by the factor
+     */
+    QExtendedGenericMatrix<N, M, T> operator*=(T factor);
+
+    /**
+     * @brief operator += Adds matrix other to this matrix
+     * @param other
+     * @return
+     */
+    QExtendedGenericMatrix<N, M, T> operator+=(const QGenericMatrix<N, M, T> &other);
+
+    /**
+     * @brief operator -= Subtracts matrix other from this matrix
+     * @param other
+     * @return
+     */
+    QExtendedGenericMatrix<N, M, T> operator-=(const QGenericMatrix<N, M, T> &other);
+
+    /**
+     * @brief operator /= Divides each entry of this matrix by a factor
+     * @param divisor The factor this matrix is divided by
+     * @return Returns a copy of this matrix after division by the factor
+     */
+    QExtendedGenericMatrix<N, M, T> operator/=(T divisor);
+
+    /**
+     * @brief operator * Multiplies this a matrix with another matrix
+     * @param m1 First matrix
+     * @param m2 Second matrix
+     * @return Returns a new matrix containing the product of m1 and m2
+     */
+    friend QExtendedGenericMatrix<N, M, T> operator*(const QGenericMatrix<N, M, T> &m1, const QGenericMatrix<M, N, T> &m2)
+    {
+        auto m = m1 * m2;
+        return (*static_cast<QExtendedGenericMatrix<N, M, T>*>(&m));
+    }
+
+    /**
+     * @brief operator * Multiplies a matrix by a factor
+     * @param factor The factor this matrix is multiplied by
+     * @param matrix The matrix factor
+     * @return Returns a copy of this matrix after multiplication by the factor
+     */
+    friend QExtendedGenericMatrix<N, M, T> operator*(T factor, const QGenericMatrix<N, M, T> &matrix)
+    {
+        auto m = factor * matrix;
+        return (*static_cast<QExtendedGenericMatrix<N, M, T>*>(&m));
+    }
+
+    /**
+     * @brief operator * Multiplies a matrix by a factor
+     * @param matrix The matrix factor
+     * @param factor The factor this matrix is multiplied by
+     * @return Returns a copy of this matrix after multiplication by the factor
+     */
+    friend QExtendedGenericMatrix<N, M, T> operator*(const QGenericMatrix<N, M, T> &matrix, T factor)
+    {
+        auto m = matrix * factor;
+        return (*static_cast<QExtendedGenericMatrix<N, M, T>*>(&m));
+    }
+
+    /**
+     * @brief operator + Adds matrices m1 and m2
+     * @param m1 The first matrix
+     * @param m2 The second matrix
+     * @return Returns a new matrix after addition of m1 and m2
+     */
+    friend QExtendedGenericMatrix<N, M, T> operator+(const QGenericMatrix<N, M, T> &m1, const QGenericMatrix<N, M, T> &m2)
+    {
+        auto m = m1 + m2;
+        return (*static_cast<QExtendedGenericMatrix<N, M, T>*>(&m));
+    }
+
+    /**
+     * @brief operator - Subtracts matrix m2 from matrix m1
+     * @param m1 The minuend
+     * @param m2 The subtrahend
+     * @return Returns a new matrix after subtraction
+     */
+    friend QExtendedGenericMatrix<N, M, T> operator-(const QGenericMatrix<N, M, T> &m1, const QGenericMatrix<N, M, T> &m2)
+    {
+        auto m = m1 - m2;
+        return (*static_cast<QExtendedGenericMatrix<N, M, T>*>(&m));
+    }
+
+    /**
+     * @brief operator - Negates argument matrix
+     * @param matrix The mateix which is negated
+     * @return Returns a new matrix negation
+     */
+    friend QExtendedGenericMatrix<N, M, T> operator-(const QGenericMatrix<N, M, T> &matrix)
+    {
+        auto m = -matrix;
+        return (*static_cast<QExtendedGenericMatrix<N, M, T>*>(&m));
+    }
+
+    /**
+     * @brief operator / Divides each entry of this matrix by divisor
+     * @param matrix The matrix which is divided by divisor
+     * @param divisor The number by which matrix is divided
+     * @return Returns a new matrix after division
+     */
+    friend QExtendedGenericMatrix<N, M, T> operator/(const QGenericMatrix<N, M, T> &matrix, T divisor)
+    {
+        QGenericMatrix<N, M, T> m = matrix / divisor;
+        return (*static_cast<QExtendedGenericMatrix<N, M, T>*>(&m));
+    }
+
 protected:
 
     /**
@@ -119,7 +240,25 @@ template <typename T>
 using QEMatrix2x2 = QExtendedGenericMatrix<2, 2, T>;
 
 template <typename T>
+using QEMatrix2x3 = QExtendedGenericMatrix<2, 3, T>;
+
+template <typename T>
+using QEMatrix2x4 = QExtendedGenericMatrix<2, 4, T>;
+
+template <typename T>
+using QEMatrix3x2 = QExtendedGenericMatrix<3, 2, T>;
+
+template <typename T>
 using QEMatrix3x3 = QExtendedGenericMatrix<3, 3, T>;
+
+template <typename T>
+using QEMatrix3x4 = QExtendedGenericMatrix<3, 4, T>;
+
+template <typename T>
+using QEMatrix4x2 = QExtendedGenericMatrix<4, 2, T>;
+
+template <typename T>
+using QEMatrix4x3 = QExtendedGenericMatrix<4, 3, T>;
 
 template <typename T>
 using QEMatrix4x4 = QExtendedGenericMatrix<4, 4, T>;
@@ -246,6 +385,48 @@ QExtendedGenericMatrix<1, M, T> QExtendedGenericMatrix<N, M, T>::col(const uint 
         col(i, 0) = (*this)(i, j);
     }
 
+    return col;
+
+}
+
+template <int N, int M, typename T>
+QExtendedGenericMatrix<N, M, T> QExtendedGenericMatrix<N, M, T>::transposed() const
+{
+    auto *m = static_cast<QGenericMatrix<N, M, T>*>(this);
+    auto m_T = m->transposed();
+    return (*static_cast<QExtendedGenericMatrix<N, M, T>*>(&m_T));
+}
+
+template <int N, int M, typename T>
+QExtendedGenericMatrix<N, M, T> QExtendedGenericMatrix<N, M, T>::operator*=(T factor)
+{
+    auto *m_p = static_cast<QGenericMatrix<N, M, T>*>(this);
+    (*m_p) *= factor;
+    return (*static_cast<QExtendedGenericMatrix<N, M, T>*>(m_p));
+}
+
+template <int N, int M, typename T>
+QExtendedGenericMatrix<N, M, T> QExtendedGenericMatrix<N, M, T>::operator+=(const QGenericMatrix<N, M, T> &other)
+{
+    auto *m_p = static_cast<QGenericMatrix<N, M, T>*>(this);
+    (*m_p) += other;
+    return (*static_cast<QExtendedGenericMatrix<N, M, T>*>(m_p));
+}
+
+template <int N, int M, typename T>
+QExtendedGenericMatrix<N, M, T> QExtendedGenericMatrix<N, M, T>::operator-=(const QGenericMatrix<N, M, T> &other)
+{
+    auto *m_p = static_cast<QGenericMatrix<N, M, T>*>(this);
+    (*m_p) -= other;
+    return (*static_cast<QExtendedGenericMatrix<N, M, T>*>(m_p));
+}
+
+template <int N, int M, typename T>
+QExtendedGenericMatrix<N, M, T> QExtendedGenericMatrix<N, M, T>::operator/=(T divisor)
+{
+    auto *m_p = static_cast<QGenericMatrix<N, M, T>*>(this);
+    (*m_p) /= divisor;
+    return (*static_cast<QExtendedGenericMatrix<N, M, T>*>(m_p));
 }
 
 template <int N, int M, typename T>
