@@ -3,3 +3,9 @@ This repository contains an extended version of QT's matrix class QGenericMatrix
 
 ## Implementation details
 QExtendedGenericMatrix is implemented as a derived class of QGenericMatrix.
+
+## Usage
+To use QExtendedGenericMatrix, simply download qextendedgenericmatrix.h and include the file in your project.
+
+## Documentation
+Please refer to the comments inside qextendedgenericmatrix.h.
