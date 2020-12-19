@@ -94,7 +94,7 @@ public:
      * @brief transposed Determines the transposed of this matrix
      * @return Returns the transposed of this matrix
      */
-    QExtendedGenericMatrix<N, M, T> transposed() const;
+    QExtendedGenericMatrix<M, N, T> transposed() const;
 
     /**
      * @brief operator *= Multiplies each entry of this matrix by a factor
@@ -125,15 +125,16 @@ public:
     QExtendedGenericMatrix<N, M, T> operator/=(T divisor);
 
     /**
-     * @brief operator * Multiplies this a matrix with another matrix
-     * @param m1 First matrix
-     * @param m2 Second matrix
-     * @return Returns a new matrix containing the product of m1 and m2
+     * @brief operator * Multiplies this matrix with another matrix
+     * @param m1 First matrix of dimension MxN
+     * @param m2 Second matrix of dimension NxL
+     * @return Returns a new matrix of dimension MxL containing the product of m1 and m2
      */
-    friend QExtendedGenericMatrix<N, M, T> operator*(const QGenericMatrix<N, M, T> &m1, const QGenericMatrix<M, N, T> &m2)
+    template<int L>
+    friend QExtendedGenericMatrix<L, M, T> operator*(const QGenericMatrix<N, M, T> &m1, const QGenericMatrix<L, N, T> &m2)
     {
         auto m = m1 * m2;
-        return (*static_cast<QExtendedGenericMatrix<N, M, T>*>(&m));
+        return (*static_cast<QExtendedGenericMatrix<L, M, T>*>(&m));
     }
 
     /**
@@ -186,7 +187,7 @@ public:
 
     /**
      * @brief operator - Negates argument matrix
-     * @param matrix The mateix which is negated
+     * @param matrix The matrix which is negated
      * @return Returns a new matrix negation
      */
     friend QExtendedGenericMatrix<N, M, T> operator-(const QGenericMatrix<N, M, T> &matrix)
@@ -262,6 +263,15 @@ using QEMatrix4x3 = QExtendedGenericMatrix<4, 3, T>;
 
 template <typename T>
 using QEMatrix4x4 = QExtendedGenericMatrix<4, 4, T>;
+
+template <typename T>
+using QEVector2 = QExtendedGenericMatrix<1, 2, T>;
+
+template <typename T>
+using QEVector3 = QExtendedGenericMatrix<1, 3, T>;
+
+template <typename T>
+using QEVector4 = QExtendedGenericMatrix<1, 4, T>;
 
 template <int N, int M, typename T>
 QExtendedGenericMatrix<N, M, T>::QExtendedGenericMatrix() : QGenericMatrix<N, M, T>()
@@ -390,11 +400,12 @@ QExtendedGenericMatrix<1, M, T> QExtendedGenericMatrix<N, M, T>::col(const uint 
 }
 
 template <int N, int M, typename T>
-QExtendedGenericMatrix<N, M, T> QExtendedGenericMatrix<N, M, T>::transposed() const
+QExtendedGenericMatrix<M, N, T> QExtendedGenericMatrix<N, M, T>::transposed() const
 {
-    auto *m = static_cast<QGenericMatrix<N, M, T>*>(this);
-    auto m_T = m->transposed();
-    return (*static_cast<QExtendedGenericMatrix<N, M, T>*>(&m_T));
+    auto *m = static_cast<const QGenericMatrix<N, M, T>*>(this);
+    auto mT = m->transposed();
+    auto mT_derived = static_cast<QExtendedGenericMatrix<M, N, T>*>(&mT);
+    return *mT_derived;
 }
 
 template <int N, int M, typename T>
