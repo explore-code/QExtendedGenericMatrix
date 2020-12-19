@@ -1,11 +1,7 @@
 #ifndef QEXTENDEDGENERICMATRIX_H
 #define QEXTENDEDGENERICMATRIX_H
 
-#include <QObject>
 #include <QGenericMatrix>
-
-#include <cmath>
-#include <iostream>
 
 template <int N, int M, typename T>
 class QExtendedGenericMatrix : public QGenericMatrix<N, M, T>
